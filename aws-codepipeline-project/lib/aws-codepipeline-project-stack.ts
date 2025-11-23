@@ -14,6 +14,7 @@ export class AwsCodepipelineProjectStack extends Stack {
           authentication: SecretValue.secretsManager("github-token")
         }),
         commands: [
+          'npm install --package-lock-only',
           'npm ci',
           'npm run build',
           'npx cdk synth'
