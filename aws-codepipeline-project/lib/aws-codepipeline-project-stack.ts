@@ -8,8 +8,11 @@ export class AwsCodepipelineProjectStack extends cdk.Stack {
     new CodePipeline(this, 'Pipeline', {
       pipelineName: 'CDKPipeline',
       synth: new ShellStep('Synth', {
-        input: CodePipelineSource.gitHub('freddysh/aws-lambda-cicd', 'main'),
+        input: CodePipelineSource.gitHub('freddysh/aws-lambda-cicd', 'main', {
+          authentication: cdk.SecretValue.secretsManager("github-token")
+        }),
         commands: [
+          'n 20',    
           'npm ci',
           'npm run build',
           'npx cdk synth'
