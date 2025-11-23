@@ -13,12 +13,7 @@ export class AwsCodepipelineProjectStack extends Stack {
         input: CodePipelineSource.gitHub('freddysh/aws-lambda-cicd', 'main', {
           authentication: SecretValue.secretsManager("github-token")
         }),
-        commands: [
-          'npm install --package-lock-only',
-          'npm ci',
-          'npm run build',
-          'npx cdk synth'
-        ],
+        commands: [],
         buildEnvironment: {
           buildImage: LinuxBuildImage.STANDARD_7_0   // Node 20 + npm compatible
         }
