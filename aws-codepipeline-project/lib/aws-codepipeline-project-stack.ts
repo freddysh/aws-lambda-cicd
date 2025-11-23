@@ -13,7 +13,13 @@ export class AwsCodepipelineProjectStack extends Stack {
           authentication: SecretValue.secretsManager("github-token")
         }),
         commands: [
-          'npm ci',
+          'curl -fsSL https://deb.nodesource.com/setup_20.x | bash -',
+          'apt-get install -y nodejs',
+
+          'node -v',
+          'npm -v',
+
+          'npm install',
           'npm run build',
           'npx cdk synth'
         ]
