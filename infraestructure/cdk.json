@@ -1,6 +1,7 @@
 {
   "app": "npx ts-node --prefer-ts-exts bin/infraestructure.ts",
-  "watch": {
+   "requiredapprovals": "never",
+   "watch": {
     "include": [
       "**"
     ],
