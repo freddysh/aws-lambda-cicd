@@ -1,21 +1,27 @@
 #!/usr/bin/env node
-import * as cdk from 'aws-cdk-lib/core';
-import { AwsCodepipelineProjectStack } from '../lib/aws-codepipeline-project-stack';
 
-const app = new cdk.App();
-new AwsCodepipelineProjectStack(app, 'AwsCodepipelineProjectStack', {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
+import { PipelineStack } from '../lib/pipeline-stack';
+import { App } from 'aws-cdk-lib/core';
 
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+const app = new App();
+const environments = ['dev','prod'];
+const deployEnviroment = app.node.tryGetContext('env');
+if (!deployEnviroment||!environments.includes(deployEnviroment)) {
+  throw new Error(`Please supply the env context variable: cdk deploy --context env=dev/prod`);
+}
+let env = app.node.tryGetContext(deployEnviroment);
+const infrastructureRepoName=app.node.tryGetContext('infrastructureRepoName');
+const repositoryOwner=app.node.tryGetContext('repositoryOwner');
+env={
+  ...env, 
+  infrastructureRepoName,
+  repositoryOwner,
+  description:`Stack for the ${deployEnviroment} CI pipeline deployed using
+    the CDK. If you to delete this stack, delete the ${deployEnviroment} 
+    CDK infrastructure stack first`
+  }
 
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  // env: { account: '123456789012', region: 'us-east-1' },
-
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-  env: { account: '724772062870', region: 'us-east-1' },
-});
+new PipelineStack(
+  app, 
+  `${deployEnviroment}-CI-Pipeline-stack`, 
+  env);

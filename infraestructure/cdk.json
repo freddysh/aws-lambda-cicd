@@ -1,5 +1,5 @@
 {
-  "app": "npx ts-node --prefer-ts-exts bin/aws-codepipeline-project.ts",
+  "app": "npx ts-node --prefer-ts-exts bin/infraestructure.ts",
   "watch": {
     "include": [
       "**"
@@ -96,17 +96,6 @@
     "@aws-cdk/s3-notifications:addS3TrustKeyPolicyForSnsSubscriptions": true,
     "@aws-cdk/aws-ec2:requirePrivateSubnetsForEgressOnlyInternetGateway": true,
     "@aws-cdk/aws-s3:publicAccessBlockedByDefault": true,
-    "@aws-cdk/aws-lambda:useCdkManagedLogGroup": true,
-    "infrastructureRepoName":"aws-lambda-cicd",
-    "repositoryOwner":"freddysh",
-    "dev":{
-      "envName":"dev",
-      "infrastructureBranchName":"dev"
-    },
-    "prod":{
-      "envName":"prod",
-      "infrastructureBranchName":"main"
-    }
-
+    "@aws-cdk/aws-lambda:useCdkManagedLogGroup": true
   }
 }
